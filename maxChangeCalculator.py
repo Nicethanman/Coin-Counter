@@ -53,6 +53,8 @@ def calculateMaxChange(coins, cost):
     paths = []
     bestPath = []
 
+    coins.sort(reverse = True)
+
     findAllCombinations(coins, cost, 0, currPath, paths)
 
     if len(paths) == 0:
