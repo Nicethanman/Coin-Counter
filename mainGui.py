@@ -127,6 +127,7 @@ class Ui_MainWindow(object):
         self.pushButton_3.setFont(font)
         self.pushButton_3.setStyleSheet("background-color: rgb(255, 255, 255);")
         self.pushButton_3.setObjectName("pushButton_3")
+        self.pushButton_3.clicked.connect(self.resetCalculator)
         self.label.raise_()
         self.pushButton.raise_()
         self.label_2.raise_()
@@ -165,6 +166,9 @@ class Ui_MainWindow(object):
     
     def disconnectVideo(self):
         self.VideoThread.stop()
+    
+    def resetCalculator(self):
+        self.VideoThread.reset
 
 
 
@@ -193,59 +197,90 @@ class VideoThread(QThread):
     def run(self):
         self.ThreadActive = True
         cap = cv2.VideoCapture(0)
-        totalMoney = 0
-        coins = []
-
-        while self.ThreadActive and self.isInSumMode:
+       
+        while self.ThreadActive:
+            self.InSumMode = True
+            self.wantToReset = False
             totalMoney = 0
             coins = []
-            success, img = cap.read()
-            imgPre = preProcessing(img)
-            contours, hiearchy = cv2.findContours(imgPre, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-            cv2.drawContours(img, contours, -1, (0,255,0), 2)
+            while self.ThreadActive and self.isInSumMode:
+                totalMoney = 0
+                coins = []
+                success, img = cap.read()
+                imgPre = preProcessing(img)
+                contours, hiearchy = cv2.findContours(imgPre, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                cv2.drawContours(img, contours, -1, (0,255,0), 2)
 
-            # dime: ~2000-2500, nickel: ~2900-3300, quarter 3600-4100, loonie: 4250-4950, toonie: 4950-5700
+                # dime: ~2000-2500, nickel: ~2900-3300, quarter 3600-4100, loonie: 4250-4950, toonie: 4950-5700
 
-            if contours:
-                for contour in contours:
-                    coinArea = cv2.contourArea(contour)
-                    # print(coinArea)
-                    if coinArea < 2500 and coinArea > 2000:
-                        totalMoney += 0.10
-                        coins.append(0.10)
-                    elif coinArea < 3300 and coinArea > 2900:
-                        totalMoney += 0.05
-                        coins.append(0.05)
-                    elif coinArea < 4100 and coinArea > 3600:
-                        totalMoney += 0.25
-                        coins.append(0.25)
-                    elif coinArea < 4950 and coinArea > 4250:
-                        totalMoney += 1.00
-                        coins.append(1.00)
-                    elif coinArea < 5700 and coinArea >= 4950:
-                        totalMoney += 2.00
-                        coins.append(2.00)
+                if contours:
+                    for contour in contours:
+                        coinArea = cv2.contourArea(contour)
+                        # print(coinArea)
+                        if coinArea < 2500 and coinArea > 2000:
+                            totalMoney += 0.10
+                            coins.append(0.10)
+                        elif coinArea < 3300 and coinArea > 2900:
+                            totalMoney += 0.05
+                            coins.append(0.05)
+                        elif coinArea < 4100 and coinArea > 3600:
+                            totalMoney += 0.25
+                            coins.append(0.25)
+                        elif coinArea < 4950 and coinArea > 4250:
+                            totalMoney += 1.00
+                            coins.append(1.00)
+                        elif coinArea < 5700 and coinArea >= 4950:
+                            totalMoney += 2.00
+                            coins.append(2.00)
 
+                    self.ValueUpdate.emit(totalMoney)
+
+                    convertToQtFormat = QImage(img.data, img.shape[1], img.shape[0], QImage.Format_RGB888)
+                    pic = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
+                    self.ImageUpdate.emit(pic)
+                    cv2.waitKey(1)
+
+            minChange = calculateMaxChange(coins, self.cost)
+            print("Min change: " + str(minChange))
+            selectedCoins = []
+
+            while self.ThreadActive and not self.wantToReset:
                 self.ValueUpdate.emit(totalMoney)
+                success, img = cap.read()
+                imgPre = preProcessing(img)
+                contours, hiearchy = cv2.findContours(imgPre, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-                convertToQtFormat = QImage(img.data, img.shape[1], img.shape[0], QImage.Format_RGB32)
+                if contours:
+                    for contour in contours:
+
+                        if len(minChange) == 0:
+                            break
+
+                        currentCoin = 0
+                        coinArea = cv2.contourArea(contour)
+                        if coinArea < 2500 and coinArea > 2000:
+                            currentCoin = 0.1
+                        elif coinArea < 3300 and coinArea > 2900:
+                            currentCoin = 0.05
+                        elif coinArea < 4100 and coinArea > 3600:
+                            currentCoin = 0.25
+                        elif coinArea < 4950 and coinArea > 4250:
+                            currentCoin = 1
+                        elif coinArea < 5700 and coinArea >= 4950:
+                            currentCoin = 2
+
+                        for coin in minChange:
+                            if coin == currentCoin:
+                                selectedCoins.append(contour)
+                                minChange.remove(coin)
+                                break
+
+                cv2.drawContours(img, selectedCoins, -1, (255,0,0), 2)
+                convertToQtFormat = QImage(img.data, img.shape[1], img.shape[0], QImage.Format_RGB888)
                 pic = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
                 self.ImageUpdate.emit(pic)
                 cv2.waitKey(1)
 
-        minChange = calculateMaxChange(coins, self.cost)
-
-        while self.ThreadActive and not self.wantToReset:
-            self.ValueUpdate.emit(totalMoney)
-            success, img = cap.read()
-            imgPre = preProcessing(img)
-            contours, hiearchy = cv2.findContours(imgPre, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-            cv2.drawContours(img, contours, -1, (255,0,0), 2)
-            convertToQtFormat = QImage(img.data, img.shape[1], img.shape[0], QImage.Format_RGB888)
-            pic = convertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
-            self.ImageUpdate.emit(pic)
-            cv2.waitKey(1)
 
     def switchToCalculate(self, cost):
         self.isInSumMode = False
@@ -257,6 +292,8 @@ class VideoThread(QThread):
     def stop(self):
         self.ThreadActive = False
         self.quit()
+    
+        
 
 
 if __name__ == "__main__":
