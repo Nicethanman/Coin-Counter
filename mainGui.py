@@ -168,7 +168,7 @@ class Ui_MainWindow(object):
         self.VideoThread.stop()
     
     def resetCalculator(self):
-        self.VideoThread.reset
+        self.VideoThread.reset()
 
 
 
@@ -199,10 +199,9 @@ class VideoThread(QThread):
         cap = cv2.VideoCapture(0)
        
         while self.ThreadActive:
-            self.InSumMode = True
-            self.wantToReset = False
             totalMoney = 0
             coins = []
+            self.wantToReset = False
             while self.ThreadActive and self.isInSumMode:
                 totalMoney = 0
                 coins = []
@@ -213,6 +212,7 @@ class VideoThread(QThread):
 
                 # dime: ~2000-2500, nickel: ~2900-3300, quarter 3600-4100, loonie: 4250-4950, toonie: 4950-5700
 
+            
                 if contours:
                     for contour in contours:
                         coinArea = cv2.contourArea(contour)
@@ -288,6 +288,7 @@ class VideoThread(QThread):
 
     def reset(self):
         self.wantToReset = True
+        self.isInSumMode = True
         
     def stop(self):
         self.ThreadActive = False
