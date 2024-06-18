@@ -49,7 +49,14 @@ background-color: rgb(50, 50, 50);</string>
     </property>
     <property name="styleSheet">
      <string notr="true">color: rgb(255, 255, 255);
+border-color: rgb(255, 255, 255);
 background-color: rgb(44, 44, 44);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
     </property>
     <property name="text">
      <string>Loading Video...</string>
@@ -61,8 +68,8 @@ background-color: rgb(44, 44, 44);</string>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>890</x>
-      <y>380</y>
+      <x>864</x>
+      <y>460</y>
       <width>151</width>
       <height>31</height>
      </rect>
@@ -84,8 +91,8 @@ background-color: rgb(44, 44, 44);</string>
    <widget class="QLCDNumber" name="lcdNumber">
     <property name="geometry">
      <rect>
-      <x>810</x>
-      <y>160</y>
+      <x>784</x>
+      <y>180</y>
       <width>191</width>
       <height>91</height>
      </rect>
@@ -100,8 +107,8 @@ background-color: rgb(44, 44, 44);</string>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>800</x>
-      <y>120</y>
+      <x>774</x>
+      <y>140</y>
       <width>231</width>
       <height>31</height>
      </rect>
@@ -124,22 +131,30 @@ background-color: rgb(44, 44, 44);</string>
    <widget class="QDoubleSpinBox" name="doubleSpinBox">
     <property name="geometry">
      <rect>
-      <x>930</x>
-      <y>270</y>
+      <x>890</x>
+      <y>290</y>
       <width>91</width>
       <height>31</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>810</x>
-      <y>270</y>
-      <width>111</width>
+      <x>780</x>
+      <y>290</y>
+      <width>101</width>
       <height>31</height>
      </rect>
     </property>
@@ -161,8 +176,8 @@ background-color: rgb(44, 44, 44);</string>
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>780</x>
-      <y>330</y>
+      <x>754</x>
+      <y>410</y>
       <width>261</width>
       <height>31</height>
      </rect>
@@ -184,8 +199,8 @@ background-color: rgb(44, 44, 44);</string>
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>10</y>
+      <x>80</x>
+      <y>20</y>
       <width>511</width>
       <height>71</height>
      </rect>
@@ -210,8 +225,8 @@ background-color: rgb(44, 44, 44);</string>
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>970</x>
-      <y>0</y>
+      <x>950</x>
+      <y>20</y>
       <width>131</width>
       <height>20</height>
      </rect>
@@ -233,8 +248,8 @@ background-color: rgb(44, 44, 44);</string>
    <widget class="QPushButton" name="pushButton_3">
     <property name="geometry">
      <rect>
-      <x>780</x>
-      <y>380</y>
+      <x>754</x>
+      <y>460</y>
       <width>101</width>
       <height>31</height>
      </rect>
@@ -253,6 +268,62 @@ background-color: rgb(44, 44, 44);</string>
      <string>Reset</string>
     </property>
    </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>780</x>
+      <y>340</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Unispace</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Payment Amount:&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>910</x>
+      <y>340</y>
+      <width>101</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Unispace</family>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <property name="text">
+     <string>Sufficient</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
    <zorder>label</zorder>
    <zorder>pushButton</zorder>
    <zorder>label_2</zorder>
@@ -263,6 +334,8 @@ background-color: rgb(44, 44, 44);</string>
    <zorder>label_5</zorder>
    <zorder>pushButton_3</zorder>
    <zorder>lcdNumber</zorder>
+   <zorder>label_6</zorder>
+   <zorder>label_7</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

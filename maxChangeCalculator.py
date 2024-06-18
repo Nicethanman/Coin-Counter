@@ -54,6 +54,8 @@ def calculateMaxChange(coins, cost):
     bestPath = []
 
     coins.sort(reverse = True)
+    closestSum = float("inf")
+    currSum = 0
 
     findAllCombinations(coins, cost, 0, currPath, paths)
 
@@ -64,8 +66,15 @@ def calculateMaxChange(coins, cost):
     print("ALL PATHS:" + str(paths))
 
     for path in paths:
-        if len(path) > len(bestPath):
+
+        for coin in path:
+            currSum += coin
+
+        if len(path) >= len(bestPath) and currSum <= closestSum:
             bestPath = path
+            closestSum = currSum
+        
+        currSum = 0
 
     memoization_dic.clear()
 
