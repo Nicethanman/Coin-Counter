@@ -9,8 +9,11 @@ A recursive approach was taken for calculating the best combination of coins to 
 - Creating GUI's with PYQT
 - Using QT Threads to capture video and make calculations simultaneously
 
-To test it out, ensure you have OpenCV and PYQT installed. Then run the mainGui.py file with
 
+# Try it yourself:
+To test it out, ensure you have OpenCV and PYQT installed. Then run the mainGui.py file with
 ```
   py mainGui.py
 ```
+
+in mainGui.py, you can adjust the coin area calculations to your desired camera height. For reference, I tested on a black background with a camera height of 18 cm
